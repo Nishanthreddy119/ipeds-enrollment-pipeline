@@ -1,0 +1,18 @@
+version: 2
+
+models:
+  - name: fct_enrollment_by_institution_year
+    description: "Fall headcount per institution per year with undergrad/grad split and year-over-year change."
+    columns:
+      - name: institution_year_key
+        tests:
+          - unique
+          - not_null
+      - name: total_enrolled
+        description: "EFALEVEL 1 grand total. Null means the institution has no grand-total row that year."
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: yoy_pct_change
+        description: "Null for an institution's first year, or when the prior year is missing."

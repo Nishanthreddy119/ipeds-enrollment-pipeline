@@ -1,0 +1,20 @@
+version: 2
+
+# Raw IPEDS files are read straight from disk; nothing is loaded by hand.
+#   union_by_name = true  -> years with different column sets still stack cleanly
+#   all_varchar   = true  -> no type guessing on raw data; staging does the casting
+#   filename      = true  -> the year is taken from the file name (hd2024.csv -> 2024)
+
+sources:
+  - name: ipeds
+    description: "IPEDS Complete Data Files from NCES. Drop the unzipped CSVs into data/raw/."
+    tables:
+      - name: hd
+        description: "Institutional Characteristics - Directory information (HDyyyy). One row per institution per year."
+        meta:
+          external_location: "read_csv('data/raw/hd*.csv', header = true, union_by_name = true, all_varchar = true, filename = true)"
+
+      - name: ef_a
+        description: "Fall Enrollment Part A (EFyyyyA). One row per institution per level of student (EFALEVEL)."
+        meta:
+          external_location: "read_csv('data/raw/ef*a.csv', header = true, union_by_name = true, all_varchar = true, filename = true)"

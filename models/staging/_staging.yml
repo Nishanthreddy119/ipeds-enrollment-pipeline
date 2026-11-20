@@ -1,0 +1,44 @@
+version: 2
+
+models:
+  - name: stg_ipeds__institutions
+    description: "IPEDS directory (HD), one row per institution per year, codes decoded to labels."
+    columns:
+      - name: unitid
+        description: "IPEDS institution ID"
+        tests:
+          - not_null
+      - name: survey_year
+        tests:
+          - not_null
+      - name: institution_year_key
+        description: "unitid-year. Must be unique: a failure usually means both hdYYYY.csv and hdYYYY_rv.csv are in data/raw."
+        tests:
+          - unique
+          - not_null
+      - name: sector_code
+        tests:
+          - relationships:
+              arguments:
+                to: ref('sector_codes')
+                field: sector_code
+
+  - name: stg_ipeds__fall_enrollment
+    description: "IPEDS Fall Enrollment Part A, one row per institution per year per level of student."
+    columns:
+      - name: unitid
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_ipeds__institutions')
+                field: unitid
+      - name: survey_year
+        tests:
+          - not_null
+      - name: student_level_code
+        tests:
+          - not_null
+      - name: total_enrolled
+        tests:
+          - not_null

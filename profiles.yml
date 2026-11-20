@@ -1,0 +1,9 @@
+# dbt looks for profiles.yml in the project folder first when you run
+# dbt with --profiles-dir . (or set DBT_PROFILES_DIR=.)
+ipeds_pipeline:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: ipeds.duckdb
+      threads: 4

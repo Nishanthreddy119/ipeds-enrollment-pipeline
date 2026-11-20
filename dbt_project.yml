@@ -1,0 +1,25 @@
+name: ipeds_pipeline
+version: "0.1.0"
+config-version: 2
+
+profile: ipeds_pipeline
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+analysis-paths: ["analyses"]
+
+clean-targets: ["target", "dbt_packages"]
+
+models:
+  ipeds_pipeline:
+    staging:
+      +materialized: view
+      +schema: staging
+    marts:
+      +materialized: table
+      +schema: marts
+
+seeds:
+  ipeds_pipeline:
+    +schema: reference
